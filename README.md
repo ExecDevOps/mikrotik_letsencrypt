@@ -7,19 +7,19 @@ It all starts with an external Linux server, with Certbot, that updates LetsEncr
 
 Start with creating the "mikrotik" account on the Linux server:
 
-  # adduser mikrotik
+	# adduser mikrotik
   
 Log in to this new account:
 
-  # sudo -iu mikrotik
+	# sudo -iu mikrotik
   
 Create a private/public certificate/key combination, this will create the necessary ~/.ssh directory with correct permissions and store the certificate files in ~/.ssh/id_rsa resp. ~/.ssh/id_rsa.pub. NOTE! do not supply a password, i.e. use an empty password:
 
-  # ssh-keygen -t RSA -m PEM -N ""
+	# ssh-keygen -t RSA -m PEM -N ""
   
 Add the public key to the list of trusted public keys for login to this account:
 
-  # cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+	# cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 
 
@@ -28,15 +28,15 @@ Certbot
 
 Install Certbot:
 
-  # apt install certbot
+	# apt install certbot
 
 Create a wildcard certificate for "*.acme.com", this requires adding a TXT record to the DNS server for the acme.com domain. Certbot will provide instructions as to what the record needs to look like, it will be something like "_acme-challenge.acme.com. 300 IN TXT "gfj9Xq...Rg85nM":
 
-  # certbot certonly --preferred-challenges=dns --manual --hsts --staple-ocsp --email support@acme.com -d *.acme.com --server https://acme-v02.api.letsencrypt.org/directory
+	# certbot certonly --preferred-challenges=dns --manual --hsts --staple-ocsp --email support@acme.com -d *.acme.com --server https://acme-v02.api.letsencrypt.org/directory
 
 Create a deploy script for Certbot to run every time the certificate gets updated. The script will create a repository (directory) that only the "mikrotik" account we created earlier has access to:
 
-  # nano /etc/letsencrypt/renewal-hooks/deploy/0001-mikrotik-certbot-deploy.sh
+	# nano /etc/letsencrypt/renewal-hooks/deploy/0001-mikrotik-certbot-deploy.sh
 
 	#!/bin/sh
 
