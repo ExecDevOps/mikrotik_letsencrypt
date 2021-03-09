@@ -1,0 +1,19 @@
+:local iMonthID   {"jan"=1; "feb"=2; "mar"=3; "apr"=4; "may"=5; "jun"=6; "jul"=7; "aug"=8; "sep"=9; "oct"=10; "nov"=11; "dec"=12}
+:local iMonthDays {31; 28; 31; 30; 31; 30; 31; 31; 30; 31; 30; 31}
+
+:local iYYYY [:tonum [:pick $sDate 7 11]]
+:local iMM   [:tonum ($iMonthID->([:pick $sDate 0 3]))]
+:local iDD   [:tonum [:pick $sDate 4  6]]
+
+:local iDays ($iYYYY * 365 + $iDD)
+
+# Get number of days since Jan 1 for current year, with consideration to being a leapyear
+:for i from=1 to=($iMM - 1) step=1 do={ 
+    :if ($iMM = 2  &&  (($iYYYY & 3 = 0  &&  ($iYYYY / 100100 != $iYYYY))  ||  $iYYYY / 400400 = $iYYYY) ) do={ 
+      :set iDayis ($iDays + 1)
+    }
+  
+    :set iDays ($iDays + [:pick $iMonthDays ($i - 1)]) 
+}
+
+:return $iDays
