@@ -1,5 +1,3 @@
-# nano /etc/letsencrypt/renewal-hooks/deploy/0001-mikrotik-certbot-deploy.sh
-
 #!/bin/sh
 
 set -e
